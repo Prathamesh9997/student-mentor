@@ -95,6 +95,9 @@ app.post("/assigned-students", (req, res) => {
 });
 
 //Server
+app.get("/", (req, res) => {
+  res.send("Server is up and running");
+});
 app.listen(PORT, () => {
   console.log("server is up and running");
 });
