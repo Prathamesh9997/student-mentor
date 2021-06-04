@@ -1,10 +1,16 @@
 import express, { request } from "express";
+import path from "path";
 const PORT = process.env.PORT || 5000;
 const mentors = [];
 const students = [];
 
 const app = express();
 app.use(express.json());
+const __dirname = path.resolve();
+console.log(__dirname);
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "client/build")));
 
 //Create mentor
 app.post("/create-mentor", (req, res) => {
@@ -95,8 +101,9 @@ app.post("/assigned-students", (req, res) => {
 });
 
 //Server
-app.get("/", (req, res) => {
-  res.send("Server is up and running");
+// All other GET requests not handled before will return our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client/build", "index.html"));
 });
 app.listen(PORT, () => {
   console.log("server is up and running");
